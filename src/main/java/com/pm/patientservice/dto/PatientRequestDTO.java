@@ -1,15 +1,18 @@
 package com.pm.patientservice.dto;
 
+import com.pm.patientservice.dto.validators.CreatePatientValidationGroup;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public class PatientRequestDTO {
 
     @NotBlank(message = "Name is Required")
+    @Size(max = 100, message = "Name should be less than 100 characters")
     private String name;
 
-    @NotNull()
+    @NotBlank(message = "Email is Required")
     @Email(message = "Email should be valid")
     private String email;
 
@@ -19,7 +22,7 @@ public class PatientRequestDTO {
     @NotBlank(message = "Date of Birth is required")
     private String dateOfBirth;
 
-
+    @NotBlank(groups = CreatePatientValidationGroup.class, message = "Registration Date is required")
     private String registrationDate;
 
     public @NotBlank(message = "Name is Required") String getName() {
@@ -30,12 +33,12 @@ public class PatientRequestDTO {
         this.name = name;
     }
 
-    public @Email(message = "Email should be valid") String getEmail() {
+    public @NotNull() @Email(message = "Email should be valid") String getEmail() {
         return email;
     }
 
-    public void setEmail(@Email(message = "Email should be valid") String email) {
-        email = email;
+    public void setEmail(@NotNull() @Email(message = "Email should be valid") String email) {
+        this.email = email;
     }
 
     public @NotBlank(message = "Address is required") String getAddress() {
@@ -54,11 +57,11 @@ public class PatientRequestDTO {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public @NotNull(message = "Registered date is required") String getRegistrationDate() {
+    public String getRegistrationDate() {
         return registrationDate;
     }
 
-    public void setRegistrationDate(@NotNull(message = "Registered date is required") String registrationDate) {
+    public void setRegistrationDate(String registrationDate) {
         this.registrationDate = registrationDate;
     }
 }
