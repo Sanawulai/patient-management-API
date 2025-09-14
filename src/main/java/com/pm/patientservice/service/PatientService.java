@@ -16,6 +16,7 @@ import java.util.UUID;
 @Service
 public class PatientService {
 
+
     private PatientRepository patientRepository;
     public PatientService(PatientRepository patientRepository) {
         this.patientRepository = patientRepository;
@@ -31,6 +32,12 @@ public class PatientService {
 
         return patients.stream()
                 .map(PatientMapper::toDTO).toList();
+    }
+
+    public PatientResponseDTO getPatientById(UUID id){
+        return patientRepository.findById(id)
+                .map(PatientMapper::toDTO)
+                .orElseThrow(()-> new PatientNotFoundException("Patient not found with ID: "+ id));
     }
 
     public PatientResponseDTO createPatient(PatientRequestDTO patientRequestDTO){
